@@ -1,0 +1,73 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+@use '../util/mixins.scss' as *;
+
+
+.topCtn {
+    @include linearGradient;
+}
+.coinSearchAddCtn, .coinCtn, .modal {
+    background-color: var(--ctn-bg);
+    border-radius: 8px;
+    overflow-x: hidden;
+}
+
+.modal {
+    width: 90%;
+    max-width: rem(450);
+    height: auto;
+    overflow: hidden;
+
+
+    div {
+
+        input {
+            @include transition;
+
+            &:focus {
+                outline: 2px solid var(--dark-bg)
+            }
+        }
+        button {
+            @include linearGradient;
+            @include transition;
+
+            &:hover {
+                opacity: .8;
+            }
+        }
+    }
+}
+
+.coinSearchAddCtn {
+    form {
+
+        input {
+            @include transition;
+
+            &:focus {
+                outline: 2px solid var(--dark-bg)
+            }
+        }
+
+        .btn_Ctn {
+            position: relative !important;
+
+
+            img {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        button {
+            @include linearGradient;
+            @include transition;
+
+            &:hover {
+                opacity: .8;
+            }
+        }
+    }
+}

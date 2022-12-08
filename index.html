@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+          <!-- custom stylesheet + script -->
+   <link rel="stylesheet" href="/dist/style.css">
+   <script defer src="/dist/script.js"></script>
+
+  <!-- favicon img -->
+  <link rel="shortcut icon" href="/images/Ocalculator.jpg" type="image/x-icon">
+
+  <!-- google font CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- bootstrap icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+
+
+</head>
+<body class="text-white">
+
+    <div class="vh overlay transition ease-in-out delay-150 fixed w-full h-full bg-zinc-900 opacity-40"></div>
+
+    <div class="vh modal transition ease-in-out delay-150 fixed z-20 mx-auto inset-x-0 my-5 pt-4 pb-4">
+        <div class="coin_info flex justify-between items-center px-6 pb-2 border-b-2 border-indigo-500">
+            <img class="w-16 rounded-full" src="/images/btc.jpg" alt="">
+            <p class="coinName font-bold text-2xl">BITCOIN</p>
+            <div class="priceCtn flex flex-col text-center">
+                <p class="font-bold text-slate-300">ATH</p>
+                <p class="ath font-bold text-lg">$61000</p>
+            </div>
+        </div>
+
+        <div class="info px-8 flex gap-x-3 mt-2">
+            <i class="bi bi-info-circle"></i>
+            <p class="text-xs">Input how many BTC you have below , then click 'add to wallet' to calculate the value of your holding when it goes back to all time high</p>
+        </div>
+
+        <form  id="coinUnitsForm" class="px-5 mt-8">
+            <p class="text-lg font-semibold py-3">How many BTC do you have ?</p>
+            <input id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'" required type="text">
+            <button class="w-full rounded-md px-1 py-3 font-bold " type="submit">Add to wallet</button>
+        </form>
+    </div>
+    
+    <div class="topCtn flex flex-col lg:flex-row justify-center gap-2 items-center py-4 text-white text-center">
+        <p class="text-lg" >Bull run balance :</p>
+        <p class="walletBalance text-2xl font-bold">$2500</p>
+    </div>
+
+    <div class="container flex flex-col lg:flex-row mt-5 items-center">
+        <div class="coinSearchAddCtn self-start p-4 mx-2">
+            <p class="text-lg font-semibold py-3">Enter coin index below to search for it and add to wallet</p>
+            <form id="searchForm">
+                <input id="searchInput" class="w-full p-3 rounded-md mb-5 text-black" minlength="3" placeholder="Enter coin Index, eg: 'BTC'" required type="text">
+                <p class="errorMessage text-red-600 py-2"></p>
+                <div class="btn_Ctn">
+                    <button id="searchBtn" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Search</button>
+                    <img id="loaderImg" class="w-16 dn absolute" src="/images/Rolling-0.6s-224px (2).gif" alt="Loading...">
+                </div>
+            </form>
+        </div>
+
+        <div class="coinsCtn mb-6 text-center lg:self-start lg:w-1/2 mx-auto w-11/12">
+            <h3 class="text-xl font-bold text-center mx-auto mt-5">WALLET</h3>
+
+            <p class="emptyMessage font-bold text-slate-400 text-xl py-5">
+                Your wallet is empty :(
+            </p>
+
+
+        </div>
+    </div>
+</body> 
+</html>

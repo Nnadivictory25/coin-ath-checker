@@ -1,0 +1,12 @@
+@use '../util/breakpoints.scss' as *;
+@use '../util/functions.scss' as *;
+
+// This is where mixins will be created . 
+
+@mixin transition {
+    transition: all .2s ease-in-out;
+}
+
+@mixin linearGradient {
+    background:  linear-gradient(117deg, var(--light-bg) 0%, var(--dark-bg) 100%);
+}
