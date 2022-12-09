@@ -19,6 +19,7 @@ let imgUrl = ''
 let coinName = ''
 let walletBalance = 0
 let currentCoinPrice = 0
+let coinAth = 0
 
 
 let closeModal = () => {
@@ -91,6 +92,7 @@ searchForm.addEventListener("submit", async (e) => {
           resetBtn()
           imgUrl = coin.png64
           coinName = coin.name
+          coinAth = coin.allTimeHighUSD.toFixed(3)
           currentCoinPrice = coin.rate
           if (coinName.split(' ').length > 2) {
              coinName = coinName.split(' ').map((name) => name[0]).join('')
@@ -113,7 +115,10 @@ searchForm.addEventListener("submit", async (e) => {
             
             <div  id="coinUnitsForm" class="px-5 mt-8">
                 <p class="text-lg font-semibold py-3">How many ${coinName} do you have ?</p>
-                <input oninput="updateUnit(this.value, ${(coin.allTimeHighUSD).toFixed(3)})" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'" required type="number" autofocus>
+                <input oninput="updateUnit(this.value, ${(coin.allTimeHighUSD).toFixed(3)})" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
+                <h2 class="text-center font-bold text-xl">OR</h2>
+                <p class="text-lg font-semibold py-3">How many ${coinName} do you wanna buy ?</p>
+                <input oninput="updateUnitFiat(this.value)" id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter amount in $, eg '20,000'"  type="text">
                 <p class="addToWalletErrMsg text-red-600 py-2"></p>
                 <div class="valueDisplayCtn justify-between hidden py-1">
                 <div class="athCtn text-center basis-2/4">
@@ -157,6 +162,13 @@ let updateUnit = (value, coinAth) =>  {
         <p class="athValue font-semibold py-2 text-lg">${currentValue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
     </div>
     `
+}
+
+let updateUnitFiat = (value) => {
+    let coinValue = +value / currentCoinPrice
+    document.querySelector('#coinsUnits').value = coinValue
+    console.log('working');
+    updateUnit(+document.querySelector('#coinsUnits').value, coinAth)
 }
 
 

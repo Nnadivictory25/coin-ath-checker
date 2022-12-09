@@ -42,10 +42,23 @@
             <p class="text-xs">Input how many BTC you have below , then click 'add to wallet' to calculate the value of your holding when it goes back to all time high</p>
         </div>
 
-        <form  id="coinUnitsForm" class="px-5 mt-8">
+        <form  id="coinUnitsForm" class="px-5 mt-5">
             <p class="text-lg font-semibold py-3">How many BTC do you have ?</p>
             <input  id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'" required type="text">
+            <h2 class="text-center font-bold text-xl">OR</h2>
+            <p class="text-lg font-semibold py-3">How many BTC do you wanna buy ?</p>
+            <input  id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter amount in $, eg '20,000'" required type="text">
             <p class="addToWalletErrMsg text-red-600 py-2"></p>
+            <div class="valueDisplayCtn flex justify-between">
+                <div class="athCtn text-center">
+                    <p class="font-bold text-slate-300">Value(ATH)</p>
+                    <p class="athValue font-semibold py-2 text-lg">1000</p>
+                </div>
+                <div class="nowCtn text-center">
+                    <p class="font-bold text-slate-300">Value(NOW)</p>
+                    <p class="athValue font-semibold py-2 text-lg">1000</p>
+                </div>
+            </div>
             <button class="w-full rounded-md px-1 py-3 font-bold " type="submit">Add to wallet</button>
         </form>
     </div>
