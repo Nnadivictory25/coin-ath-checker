@@ -56,16 +56,21 @@ let displayErrorMessage = (element, message, timeout = 3000) => {
 };
 
 let updateBalance = () => {
-  const total = coins
-    .map((coin) => coin.value)
-    .map((value) => +value.replaceAll(",", "").replace("$", ""))
-    .reduce((a, b) => a + b, 0);
-  walletBalance = total;
-  walletBalance = walletBalance.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-  walletBalanceEle.textContent = walletBalance;
+    if (coins.length !== 0) {
+        emptyMessage.remove();
+        const total = coins
+          .map((coin) => coin.value)
+          .map((value) => +value.replaceAll(",", "").replace("$", ""))
+          .reduce((a, b) => a + b, 0);
+        walletBalance = total;
+        walletBalance = walletBalance.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+        });
+        walletBalanceEle.textContent = walletBalance;
+    } else {
+        walletBalanceEle.textContent = '$0'
+    }
 };
 
 let coins = JSON.parse(localStorage.getItem("coins")) || [];
@@ -195,39 +200,60 @@ let updateUnitFiat = (value) => {
 };
 
 let updateUI = () => {
-  coinsContainer.innerHTML =
-        '<h3 class="text-xl font-bold text-center mx-auto mt-5">WALLET</h3>';
+    coinsContainer.innerHTML =
+        `<h3 class="text-xl font-bold text-center mx-auto mt-5">WALLET</h3>
+         ${coins.length == 0 ?
+            ` <p class="emptyMessage font-bold text-slate-400 text-xl py-5">Your wallet is empty :(
+        </p>` : ''
+        }
+    `;
     updateBalance()
-  coins.map((coin) => {
-    const { name, units, value, imgUrl } = coin;
-
-    coinsContainer.innerHTML += `
-
-        <div class="coinCtn w-full mt-7 flex justify-between items-center p-3 lg:py-4 lg:px-5">
-            <div class="imgCtn flex flex-col justify-center items-center my-auto">
-                <img class="w-16 rounded-full self-start items-start" src=${imgUrl} alt="...">
-                <p class="coinName font-semibold py-1">${name}</p>
-          </div>
-            <div class="priceCtn flex flex-col text-center self-center">
-                <p class="font-bold text-slate-300">Quantity</p>
-                <p class="ath font-bold text-lg">${units.toString().indexOf('.') > -1 ? units.toLocaleString("en-US") : units.toLocaleString("en-US")}</p>
-            </div>
-            <div class="priceCtn flex flex-col text-center">
-                <p class="font-bold text-slate-300">Value(ATH)</p>
-                <p class="ath font-bold text-lg">${value}</p>
-            </div>
-        </div>
-        `;
-  });
+    if (coins.length !== 0) {
+        emptyMessage.remove();
+        coinsContainer.innerHTML += `
+        <div class="deleteBtnCtn absolute right-6 top-5 ">
+        <i onclick="clearAll()" class="bi bi-trash3 cursor-pointer text-2xl"></i>
+        <p class="font-semibold  text-xs">Clear All</p>
+        </div>`
+        coins.map((coin) => {
+          const { name, units, value, imgUrl } = coin;
+      
+          coinsContainer.innerHTML += `
+      
+              <div class="coinCtn w-full mt-7 flex justify-between items-center p-3 lg:py-4 lg:px-5">
+                  <div class="imgCtn flex flex-col justify-center items-center my-auto">
+                      <img class="w-16 rounded-full self-start items-start" src=${imgUrl} alt="...">
+                      <p class="coinName font-semibold py-1">${name}</p>
+                </div>
+                  <div class="priceCtn flex flex-col text-center self-center">
+                      <p class="font-bold text-slate-300">Quantity</p>
+                      <p class="ath font-bold text-lg">${units.toString().indexOf('.') > -1 ? units.toLocaleString("en-US") : units.toLocaleString("en-US")}</p>
+                  </div>
+                  <div class="priceCtn flex flex-col text-center">
+                      <p class="font-bold text-slate-300">Value(ATH)</p>
+                      <p class="ath font-bold text-lg">${value}</p>
+                  </div>
+              </div>
+              `;
+        });
+    } 
 };
+
 
 let generatePortfolio = () => {
-  if (coins.length !== 0) {
-    emptyMessage.remove();
     updateBalance();
     updateUI();
-  }
 };
+
+
+let clearAll = () => {
+    coins = []
+    localStorage.setItem("coins", JSON.stringify(coins));
+    updateUI()
+
+    console.log(coins);
+}
+
 
 let addCoin = (coinAth, units = unitValue, img = imgUrl) => {
   const value = (coinAth * units).toLocaleString("en-US", {
