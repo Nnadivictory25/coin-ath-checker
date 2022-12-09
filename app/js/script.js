@@ -8,30 +8,61 @@ const searchBtn = document.querySelector("#searchBtn");
 const loadingImg = document.querySelector("#loaderImg");
 const coinsContainer = document.querySelector(".coinsCtn");
 const errorMsgElement = document.querySelector('.errorMessage')
-const walletBalance = document.querySelector('.walletBalance')
+const walletBalanceEle = document.querySelector('.walletBalance')
 const emptyMessage = document.querySelector('.emptyMessage')
+
+const overlayElems = [overlay, closeModalBtn]
 
 let coinQuery = "";
 let unitValue = 0
 let imgUrl = ''
 let coinName = ''
+let walletBalance = 0
+let currentCoinPrice = 0
 
 
 let closeModal = () => {
-    overlay.classList.add('vh')
-    modal.classList.add('vh')
+    const elems = [overlay, modal]
+    elems.forEach((elem) => {
+        elem.classList.add('fade-out')
+        if (elem.classList.contains('fade-in')) {
+            elem.classList.remove('fade-in')
+        }
+    })
 }
 
 let openModal = () => {
-    overlay.classList.remove('vh')
-    modal.classList.remove('vh')
+    const elems = [overlay, modal]
+    elems.forEach((elem) => {
+        elem.classList.remove('fade-out')
+    })
+    modal.classList.add('fade-in')
+    overlay.classList.add('fade_in_overlay')
 }
 
 let resetBtn = () => {
     searchBtn.textContent = "Search";
     loadingImg.classList.add("dn");
     searchInput.value = ''
+    document.activeElement.blur()
 }
+
+let displayErrorMessage = (element, message, timeout) => {
+    element.textContent = `${message}`
+
+    setTimeout(() => {
+        element.textContent = ''
+    },timeout)
+}
+
+let updateBalance = () => {
+    const total = coins.map((coin) => coin.value).map((value) => +value.replaceAll(',', '').replace('$', '')).reduce((a, b) => a + b, 0)
+    walletBalance = total
+    walletBalance = walletBalance.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    walletBalanceEle.textContent = walletBalance
+}
+
+let coins = JSON.parse(localStorage.getItem("coins")) || []
 
 searchForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -50,80 +81,98 @@ searchForm.addEventListener("submit", async (e) => {
     }),
     body: JSON.stringify({
       currency: "USD",
-      code: `${coinQuery}`,
+      code: `${(coinQuery).toUpperCase()}`,
       meta: true,
     }),
   }).then((res) => res.json())
       .then((json) => {
-          
-        
-          console.log(json);
           const coin = json
           openModal()
+          resetBtn()
           imgUrl = coin.png64
           coinName = coin.name
+          currentCoinPrice = coin.rate
           if (coinName.split(' ').length > 2) {
              coinName = coinName.split(' ').map((name) => name[0]).join('')
           }
           modal.innerHTML = `
-          <div class="coin_info flex justify-between items-center px-6 pb-2 border-b-2 border-indigo-500">
-          <img class="w-16 rounded-full" src=${coin.png64} alt="">
-          <p class="coinName font-bold text-2xl uppercase">${coinName}</p>
-          <div class="priceCtn flex flex-col text-center">
-              <p class="font-bold text-slate-300">ATH</p>
-              <p class="ath font-bold text-lg">$${(coin.allTimeHighUSD).toFixed(3)}</p>
-          </div>
-      </div>
+                <div class="closeCtn"><i id="closeModalBtn" onclick="closeModal(); resetBtn()" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i></div>
+                <div class="coin_info flex justify-between items-center px-6 mt-5 pt-3 pb-2 border-b-2 border-t-2 border-indigo-500">
+                <img class="w-16 rounded-full mr-4 lg:mr-0" src=${coin.png64} alt="">
+                <p class="coinName font-bold lg:text-2xl text-lg uppercase">${coinName}</p>
+                <div class="priceCtn flex flex-col text-center">
+                    <p class="font-bold text-slate-300">ATH</p>
+                    <p class="ath lg:font-bold font-semibold text-lg">$${(coin.allTimeHighUSD).toFixed(3)}</p>
+                    </div>
+            </div>
 
-      <div class="info px-8 flex gap-x-3 mt-2">
-          <i class="bi bi-info-circle"></i>
-          <p class="text-xs">Input how many ${coinName} you have below , then click 'add to wallet' to calculate the value of your holding when it goes back to all time high</p>
-      </div>
-
-      <div  id="coinUnitsForm" class="px-5 mt-8">
-          <p class="text-lg font-semibold py-3">How many ${coinName} do you have ?</p>
-          <input oninput="updateUnit(this.value)" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'" required type="text">
-          <p class="unitvalueErrMsg text-red-600 py-2"></p>
-          <button onclick="addCoin(${(coin.allTimeHighUSD).toFixed(3)})" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Add to wallet</button>
-      </div>
-
+            <div class="info px-8 flex gap-x-3 mt-2">
+                <i class="bi bi-info-circle"></i>
+                <p class="text-xs">Input how many ${coinName} you have below , then click 'add to wallet' to calculate the value of your holding when it goes back to all time high</p>
+            </div>
+            
+            <div  id="coinUnitsForm" class="px-5 mt-8">
+                <p class="text-lg font-semibold py-3">How many ${coinName} do you have ?</p>
+                <input oninput="updateUnit(this.value, ${(coin.allTimeHighUSD).toFixed(3)})" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'" required type="number" autofocus>
+                <p class="addToWalletErrMsg text-red-600 py-2"></p>
+                <div class="valueDisplayCtn justify-between hidden py-1">
+                <div class="athCtn text-center basis-2/4">
+                    <p class="font-bold text-slate-300">Value(ATH)</p>
+                    <p class="athValue font-semibold py-2 text-lg">1000</p>
+                </div>
+                <div class="nowCtn text-center basis-2/4">
+                    <p class="font-bold text-slate-300">Value(NOW)</p>
+                    <p class="athValue font-semibold py-2 text-lg">1000</p>
+                </div>
+            </div>
+                <button onclick="addCoin(${(coin.allTimeHighUSD).toFixed(3)})" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Add to wallet</button>
+                </div>
+                
           `
-          console.log(unitValue);
       })
       .catch(error => {
-          errorMsgElement.textContent = 'Something went wrong, try searching for another coin or try again later'
           closeModal()
           resetBtn()
 
-          setTimeout(() => {
-            errorMsgElement.textContent = ''
-          }, 4000)
-    });
+          displayErrorMessage(errorMsgElement, 'Something went wrong, try searching for another coin or try again later', 3000)
+
+        });
 });
 
-let updateUnit = (value) => {
-    this.value = this.value.toLocaleString('en-US')
-    unitValue = +value
-    console.log(unitValue);
+let updateUnit = (value, coinAth) =>  {
+    unitValue = value
+    let athValue = value * coinAth
+    let currentValue = currentCoinPrice * value
+
+    const valueDisplayElement = document.querySelector('.valueDisplayCtn')
+    valueDisplayElement.classList.remove('hidden')
+    valueDisplayElement.classList.add('flex')
+    valueDisplayElement.innerHTML = `
+    <div class="athCtn text-center">
+        <p class="font-bold text-slate-300">Value(ATH)</p>
+        <p class="athValue font-semibold py-2 text-lg">${athValue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
+    </div>
+    <div class="nowCtn text-center">
+        <p class="font-bold text-slate-300">Value(NOW)</p>
+        <p class="athValue font-semibold py-2 text-lg">${currentValue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
+    </div>
+    `
 }
 
 
-let addCoin = (coinAth, units = unitValue, img = imgUrl) => {
-    if (unitValue > 0) {
-        closeModal()
-        emptyMessage.remove()
-        resetBtn()
-    
-        const value = (coinAth * units).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-        console.log(coinAth, units);
+let updateUI = () => {
+    coinsContainer.innerHTML = '<h3 class="text-xl font-bold text-center mx-auto mt-5">WALLET</h3>'
+    coins.map((coin) => {
+        const { name, units, value, imgUrl } = coin
+
         coinsContainer.innerHTML += `
-    
+
         <div class="coinCtn w-full mt-7 flex justify-between items-center p-3 lg:py-4 lg:px-5">
             <div class="imgCtn flex flex-col justify-center items-center my-auto">
-                <img class="w-16 rounded-full" src=${img} alt="...">
-                <p class="coinName font-semibold py-1">${coinName}</p>
+                <img class="w-16 rounded-full self-start items-start" src=${imgUrl} alt="...">
+                <p class="coinName font-semibold py-1">${name}</p>
           </div>
-            <div class="priceCtn flex flex-col text-center">
+            <div class="priceCtn flex flex-col text-center self-center">
                 <p class="font-bold text-slate-300">Quantity</p>
                 <p class="ath font-bold text-lg">${units}</p>
             </div>
@@ -133,6 +182,51 @@ let addCoin = (coinAth, units = unitValue, img = imgUrl) => {
             </div>
         </div>
         `
+    });
+}
+
+    
+let generatePortfolio = () => {
+    if (coins.length !== 0) {
+        emptyMessage.remove()
+        updateBalance()
+        updateUI()
+      }
+};
+    
+
+
+
+let addCoin = (coinAth, units = unitValue, img = imgUrl) => {
+    const value = (coinAth * units).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    const addToWalletErrorMsg = document.querySelector('.addToWalletErrMsg')
+    if (unitValue > 0 && !coins.find((coin) => coin.name === coinName)) {
+        coins.push({
+            name: coinName,
+            units: units,
+            value: value,
+            imgUrl: img
+        })
+        localStorage.setItem("coins", JSON.stringify(coins))
+        console.log(coins);
+        updateBalance()
+        updateUI()
+        closeModal();
+        emptyMessage.remove()
+        resetBtn()
+    } else if (unitValue > 0 && coins.find((coin) => coin.name === coinName)) {
+        addToWalletErrorMsg.textContent = 'Coin already exists'
+    } else if (unitValue <= 0 && !coins.find((coin) => coin.name === coinName)) {
+        addToWalletErrorMsg.textContent = 'Enter a value greater than 0'
     }
     
 }
+
+overlayElems.forEach((ele) => {
+    ele.addEventListener('click', () => {
+        closeModal()
+        resetBtn()
+    })
+})
+
+generatePortfolio()

@@ -12,8 +12,26 @@
         opacity: 1;
     }
 }
+@keyframes fade-in-overlay {
+    from {
+        visibility: hidden;
+        opacity: 0;
+    }
+    1% {
+        visibility: visible;
+        opacity: 0;
+    }
+    to {
+        visibility: visible;
+        opacity: 0.4;
+    }
+}
 .fade-in {
-    animation: fade-in .3s ease-in-out forwards;
+    animation: fade-in .2s ease-in-out forwards;
+}
+
+.fade_in_overlay {
+    animation: fade-in-overlay .3s ease-in-out forwards;
 }
 
 
