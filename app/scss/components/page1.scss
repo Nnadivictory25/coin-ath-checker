@@ -12,6 +12,12 @@
     overflow-x: hidden;
 }
 
+.overlay {
+    height: 100vh !important;
+    width: 100vw !important;
+    inset: 0;
+}
+
 .modal {
     width: 90%;
     max-width: rem(450);

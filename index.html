@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Crypto ATH portolio worth</title>
 
           <!-- custom stylesheet + script -->
    <link rel="stylesheet" href="/dist/style.css">
@@ -24,7 +24,7 @@
 </head>
 <body class="text-white">
 
-    <div class="vh overlay transition ease-in-out delay-150 fixed w-full h-full bg-zinc-900 opacity-40"></div>
+    <div class="vh overlay transition ease-in-out delay-150 fixed bg-zinc-900  z-10"></div>
 
     <div class="vh modal transition ease-in-out delay-150 fixed z-40 mx-auto inset-x-0 my-5 pt-4 pb-4">
         <div class="closeCtn"><i id="closeModalBtn" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i></div>
@@ -73,7 +73,7 @@
             <h3 class="text-xl font-bold text-center mx-auto mb-1">SEARCH</h3>
             <p class="text-lg font-semibold py-3">Enter coin index below to search for it and add to wallet</p>
             <form id="searchForm">
-                <input id="searchInput" class="w-full p-3 rounded-md mb-5 text-black" minlength="3" placeholder="Enter coin Index, eg: 'BTC'" required type="text">
+                <input id="searchInput" class="w-full p-3 rounded-md mb-5 text-black" minlength="1" placeholder="Enter coin Index, eg: 'BTC'" required type="text">
                 <p class="errorMessage text-red-600 py-2"></p>
                 <div class="btn_Ctn">
                     <button id="searchBtn" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Search</button>
@@ -88,6 +88,7 @@
             <p class="emptyMessage font-bold text-slate-400 text-xl py-5">
                 Your wallet is empty :(
             </p>
+
 
 
         </div>
