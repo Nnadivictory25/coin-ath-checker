@@ -20,6 +20,8 @@ let coinName = "";
 let walletBalance = 0;
 let currentCoinPrice = 0;
 let coinAth = 0;
+let currentCoinQuery = ''
+
 
 let closeModal = () => {
   const elems = [overlay, modal];
@@ -102,6 +104,11 @@ let updateCoinCurrentValue = () => {
   }
 
 }
+
+let updateLocalStorage = () => {
+  localStorage.setItem("coins", JSON.stringify(coins));
+}
+
 
 searchForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -202,6 +209,7 @@ let updateUnit = (value, coinAth, fromSearch = false, curPrice) => {
     currentCoinPrice = curPrice
     currentValue = curPrice * +value
   }
+  
 
   const valueDisplayElement = document.querySelector(".valueDisplayCtn");
   valueDisplayElement.classList.remove("hidden");
@@ -248,22 +256,22 @@ let updateUI = () => {
       
           coinsContainer.innerHTML += `
       
-              <div class="coinCtn relative w-full mt-7 flex justify-between items-center px-3 py-6 lg:py-4 lg:px-5">
+              <div class="coinCtn relative w-full mt-7 flex justify-between items-center px-3 py-7 md:py-4 md:px-5">
                 <div class="actionsCtn absolute right-4 top-2">
                     <div id="${name}" class="iconsCtn flex gap-x-4">
                         <i onclick="edit('${name}')" class="bi bi-pencil-square cursor-pointer"></i>
-                        <i onclick="delete('${name}')" class="bi bi-trash3 cursor-pointer"></i>
+                        <i onclick="deleteItem('${name}')" class="bi bi-trash3 cursor-pointer"></i>
                     </div>
                </div>
-                  <div class="imgCtn flex flex-col justify-center items-center my-auto">
-                      <img class="w-16 rounded-full self-start items-start" src=${imgUrl} alt=${name}>
+                  <div class="imgCtn flex flex-col justify-center self-center items-center my-auto w-1/3">
+                      <img class="w-16 rounded-full " src=${imgUrl} alt=${name}>
                       <p class="coinName font-semibold py-1">${name}</p>
                 </div>
-                  <div class="priceCtn flex flex-col text-center self-center">
+                  <div class="priceCtn flex flex-col text-center self-center w-1/3">
                       <p class="font-bold text-slate-300">Quantity</p>
                       <p class="ath font-bold text-lg">${(+units).toLocaleString("en-US")}</p>
                   </div>
-                  <div class="priceCtn flex flex-col text-center">
+                  <div class="priceCtn flex flex-col text-center w-1/3">
                       <p class="font-bold text-slate-300">Value(ATH)</p>
                       <p class="ath font-bold text-lg">${value}</p>
                   </div>
@@ -273,12 +281,40 @@ let updateUI = () => {
     } 
 };
 
-let edit = (coinName) => {
-    openModal()
-    let coinObject = coins.find((coin) => coin.name === coinName)
-    const { name, units, value, imgUrl, coinAth, currentValue, athValue, coinCurPrice } = coinObject; 
-     
+let deleteItem = (nameOfCoin) => {
+  let coinIndex = coins.findIndex((coin) => coin.name === nameOfCoin)
+  coins.splice(coinIndex, 1)
+  generatePortfolio()
+  updateLocalStorage()
+}
 
+let coinObject
+
+
+let updateCurrentUnit = (coinName) => {
+  let buttonCtn = document.querySelector('.btnCtn')
+  let Inputvalue = document.querySelector('#coinsUnits').value
+  coinObject.units = +Inputvalue
+
+  let { name, units, value, imgUrl, coinAth, currentValue, athValue, coinCurPrice, coinQuery } = coinObject;
+
+  buttonCtn.innerHTML = `
+  <button onclick="addCoinEdit(${coinAth}, ${units}, '${imgUrl}', ${coinCurPrice}, '${name}')" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Save</button>
+  `
+  
+}
+
+
+let edit = (nameOfCoin) => {
+    openModal()
+    coinName = nameOfCoin
+    coinObject = coins.find((coin) => coin.name === nameOfCoin)
+    let { name, units, value, imgUrl, coinAth, currentValue, athValue, coinCurPrice, coinQuery } = coinObject;
+    currentCoinPrice = coinCurPrice
+    currentCoinQuery = coinQuery
+      
+  
+  
     modal.innerHTML = `
             <div class="closeCtn"><i id="closeModalBtn" onclick="closeModal(); resetBtn()" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i></div>
             <div class="coin_info flex justify-between items-center px-6 mt-4 pt-3 pb-2 border-b-2 border-t-2 border-indigo-500">
@@ -297,10 +333,10 @@ let edit = (coinName) => {
 
         <div  id="coinUnitsForm" class="px-5 mt-4">
             <p class="text-lg font-semibold py-3"> ${name} quantity :</p>
-            <input oninput="updateUnit(this.value, ${coinAth}, false, ${coinCurPrice})" id="coinsUnits" value="${units}" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
+            <input oninput="updateUnit(this.value, ${coinAth}, false, ${coinCurPrice}); updateCurrentUnit('${name}')" id="coinsUnits" value="${units}" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
             <h2 class="text-center font-bold text-xl">OR</h2>
             <p class="text-lg font-semibold py-2"> ${name} value in $ :</p>
-            <input oninput="updateUnitFiat(this.value, false, ${coinCurPrice}, ${coinAth})"  id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter amount in $, eg '20,000'"  type="text">
+            <input oninput="updateUnitFiat(this.value, false, ${coinCurPrice}, ${coinAth}); updateCurrentUnit('${name}')"  id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter amount in $, eg '20,000'"  type="text">
             <p class="addToWalletErrMsg text-red-600 py-2"></p>
             <div class="valueDisplayCtn justify-between hidden py-1">
             <div class="athCtn text-center basis-2/4">
@@ -312,24 +348,22 @@ let edit = (coinName) => {
                 <p class="athValue font-semibold py-2 text-lg"></p>
             </div>
         </div>
-            <button onclick="addCoinEdit(${coinAth}, ${units}, ${imgUrl}, ${coinCurPrice})" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Add to wallet</button>
+        <div class="btnCtn">
+        <button onclick="addCoinEdit(${coinAth}, ${units}, '${imgUrl}', ${coinCurPrice}, '${name}')" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Save</button>
+        </div>
+            
             </div>
 
         `;
+  
+
 }
-let updateUnitFiat2 = (value, currentCoinPrice, coinAth) => {
-  let coinValue = +value / currentCoinPrice;
-    document.querySelector("#coinsUnits").value = coinValue;
-    updateUnit(+document.querySelector("#coinsUnits").value, coinAth);
-    document.querySelector('.currentValue').textContent = `${(+value).toLocaleString("en-US", { style: "currency", currency: "USD" })}`
-    
-}
+
 
 
 
 
 let generatePortfolio = () => {
-  updateBalance();
   updateCoinCurrentValue()
   updateUI();
 };
@@ -337,25 +371,26 @@ let generatePortfolio = () => {
 
 let clearAll = () => {
     coins = []
-    localStorage.setItem("coins", JSON.stringify(coins));
+    updateLocalStorage()
     updateUI()
-
-    console.log(coins);
 }
 
-let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice) => {
-  let athValue = units * coinAth;
-  let currentValue = coinCurPrice * units;
-  const value = (coinAth * units).toLocaleString("en-US", {
+let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice, nameOfCoin) => {
+  let athValue = +units * coinAth;
+  let currentValue = coinCurPrice * +units;
+  const value = (coinAth * +units).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
+  let selectedCoinIndex = coins.findIndex((coin) => coin.name === coinName)
+  coins.splice(selectedCoinIndex, 1)
 
-  
+
 
   const addToWalletErrorMsg = document.querySelector(".addToWalletErrMsg");
-  if (units > 0 && !coins.find((coin) => coin.name === coinName)) {
-    coins.push({
+  if (+units > 0 && !coins.find((coin) => coin.name === coinName)) {
+
+    coins.splice(selectedCoinIndex, 0, {
       name: coinName,
       units: units,
       value: value,
@@ -364,16 +399,19 @@ let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice) => {
       currentValue: currentValue,
       athValue: athValue,
       coinCurPrice: currentCoinPrice,
-    });
+      coinQuery: currentCoinQuery,
+    })
 
-    localStorage.setItem("coins", JSON.stringify(coins));
+    // coins.push();
+
+    updateLocalStorage()
     generatePortfolio();
     closeModal();
     emptyMessage.remove();
     resetBtn();
-  } else if (units > 0 && coins.find((coin) => coin.name === coinName)) {
+  } else if (+units > 0 && coins.find((coin) => coin.name === coinName)) {
     displayErrorMessage(addToWalletErrorMsg, "Coin already exists", 3000);
-  } else if (units <= 0 && !coins.find((coin) => coin.name === coinName)) {
+  } else if (+units <= 0 && !coins.find((coin) => coin.name === coinName)) {
     displayErrorMessage(
       addToWalletErrorMsg,
       "Enter a value greater than 0",
@@ -404,7 +442,7 @@ let addCoin = (coinAth, units = unitValue, img = imgUrl) => {
       coinQuery: coinQuery
     });
 
-    localStorage.setItem("coins", JSON.stringify(coins));
+    updateLocalStorage()
     generatePortfolio()
     closeModal();
     emptyMessage.remove();
