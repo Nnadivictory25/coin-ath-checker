@@ -151,7 +151,7 @@ searchForm.addEventListener("submit", async (e) => {
 
         modal.innerHTML = `
                     <div class="closeCtn"><i id="closeModalBtn" onclick="closeModal(); resetBtn()" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i></div>
-                    <div class="coin_info flex justify-between items-center px-6 mt-4 pt-3 pb-2 border-b-1 border-t-1 border-indigo-500">
+                    <div class="coin_info flex justify-between items-center px-6 mt-4 pt-3 pb-2 border-b-2 border-t-2 border-indigo-500">
                     <img class="w-16 rounded-full mr-4 lg:mr-6" src=${coin.png64} alt="">
                     <p class="coinName font-bold lg:text-xl text-lg uppercase">${coinName}</p>
                     <div class="priceCtn flex flex-col text-center">
@@ -167,10 +167,10 @@ searchForm.addEventListener("submit", async (e) => {
                 
                 <div  id="coinUnitsForm" class="px-5 mt-4">
                     <p class="text-lg font-semibold py-3"> ${coinName} quantity :</p>
-                    <input oninput="updateUnit(this.value, ${coin.allTimeHighUSD.toFixed(3)}, true)" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
+                    <input oninput="updateUnit(this.value, ${coin.allTimeHighUSD.toFixed(3)}, true)" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
                     <h2 class="text-center font-bold text-xl">OR</h2>
                     <p class="text-lg font-semibold py-2">${coinName} value in $ :</p>
-                    <input oninput="updateUnitFiat(this.value, true, ${currentCoinPrice}, ${coin.allTimeHighUSD.toFixed(3)})" id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter amount in $, eg '20,000'"  type="number">
+                    <input oninput="updateUnitFiat(this.value, true, ${currentCoinPrice}, ${coin.allTimeHighUSD.toFixed(3)})" id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter amount in $, eg '20,000'"  type="number">
                     <p class="addToWalletErrMsg text-red-600 py-2"></p>
                     <div class="valueDisplayCtn justify-between hidden py-1">
                     <div class="athCtn text-center basis-2/4">
@@ -333,10 +333,10 @@ let edit = (nameOfCoin) => {
 
         <div  id="coinUnitsForm" class="px-5 mt-4">
             <p class="text-lg font-semibold py-3"> ${name} quantity :</p>
-            <input oninput="updateUnit(this.value, ${coinAth}, false, ${coinCurPrice}); updateCurrentUnit('${name}')" id="coinsUnits" value="${units}" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
+            <input oninput="updateUnit(this.value, ${coinAth}, false, ${coinCurPrice}); updateCurrentUnit('${name}')" id="coinsUnits" value="${units}" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
             <h2 class="text-center font-bold text-xl">OR</h2>
             <p class="text-lg font-semibold py-2"> ${name} value in $ :</p>
-            <input oninput="updateUnitFiat(this.value, false, ${coinCurPrice}, ${coinAth}); updateCurrentUnit('${name}')"  id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black"  placeholder="Enter amount in $, eg '20,000'"  type="text">
+            <input oninput="updateUnitFiat(this.value, false, ${coinCurPrice}, ${coinAth}); updateCurrentUnit('${name}')"  id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter amount in $, eg '20,000'"  type="text">
             <p class="addToWalletErrMsg text-red-600 py-2"></p>
             <div class="valueDisplayCtn justify-between hidden py-1">
             <div class="athCtn text-center basis-2/4">
