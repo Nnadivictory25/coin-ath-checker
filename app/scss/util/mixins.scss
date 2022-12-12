@@ -8,5 +8,5 @@
 }
 
 @mixin linearGradient {
-    background:  linear-gradient(117deg, var(--light-bg) 0%, var(--dark-bg) 100%);
+    background:  linear-gradient(117deg, var(--light-bg) 15%, var(--dark-bg) 100%);
 }
