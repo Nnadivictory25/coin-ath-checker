@@ -140,7 +140,7 @@ searchForm.addEventListener("submit", async (e) => {
         resetBtn();
         imgUrl = coin.png64;
         coinName = coin.name;
-        coinAth = coin.allTimeHighUSD.toFixed(3);
+        coinAth = coin.allTimeHighUSD;
         currentCoinPrice = coin.rate;
         // if the coin's nme is longer than two words , display only the initials 
         if (coinName.split(" ").length > 2) {
@@ -158,7 +158,7 @@ searchForm.addEventListener("submit", async (e) => {
                     <p class="coinName font-bold lg:text-xl text-lg uppercase">${coinName}</p>
                     <div class="priceCtn flex flex-col text-center">
                         <p class="font-bold text-slate-300">ATH</p>
-                        <p class="ath lg:font-bold font-semibold text-lg">${(+coin.allTimeHighUSD.toFixed(3)).toLocaleString("en-US",{ style: "currency", currency: "USD" })}</p>
+                        <p class="ath lg:font-bold font-semibold text-lg">${(+coin.allTimeHighUSD).toLocaleString("en-US",{ style: "currency", currency: "USD" })}</p>
                         </div>
                 </div>
 
@@ -169,10 +169,10 @@ searchForm.addEventListener("submit", async (e) => {
                 
                 <div  id="coinUnitsForm" class="px-5 mt-4">
                     <p class="text-lg font-semibold py-3"> ${coinName} quantity :</p>
-                    <input oninput="updateUnit(this.value, ${coin.allTimeHighUSD.toFixed(3)}, true)" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
+                    <input oninput="updateUnit(this.value, ${coin.allTimeHighUSD}, true)" id="coinsUnits" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter coin quantity, eg '10,500'"  type="number" >
                     <h2 class="text-center font-bold text-xl">OR</h2>
                     <p class="text-lg font-semibold py-2">${coinName} value in $ :</p>
-                    <input oninput="updateUnitFiat(this.value, true, ${currentCoinPrice}, ${coin.allTimeHighUSD.toFixed(3)})" id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter amount in $, eg '20,000'"  type="number">
+                    <input oninput="updateUnitFiat(this.value, true, ${currentCoinPrice}, ${coin.allTimeHighUSD})" id="fiatUnits" class="w-full p-3 rounded-md mb-5 text-black font-semibold text-lg"  placeholder="Enter amount in $, eg '20,000'"  type="number">
                     <p class="addToWalletErrMsg text-red-600 py-2"></p>
                     <div class="valueDisplayCtn justify-between hidden py-1">
                     <div class="athCtn text-center basis-2/4">
@@ -184,7 +184,7 @@ searchForm.addEventListener("submit", async (e) => {
                         <p class="athValue font-semibold py-2 text-lg">1000</p>
                     </div>
                 </div>
-                    <button onclick="addCoin(${coin.allTimeHighUSD.toFixed(3)})" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Add to wallet</button>
+                    <button onclick="addCoin(${coin.allTimeHighUSD})" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Add to wallet</button>
                     </div>
               
         `;
