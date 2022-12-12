@@ -142,6 +142,7 @@ searchForm.addEventListener("submit", async (e) => {
         coinName = coin.name;
         coinAth = coin.allTimeHighUSD.toFixed(3);
         currentCoinPrice = coin.rate;
+        // if the coin's nme is longer than two words , display only the initials 
         if (coinName.split(" ").length > 2) {
           coinName = coinName
             .split(" ")
@@ -149,6 +150,7 @@ searchForm.addEventListener("submit", async (e) => {
             .join("");
         }
 
+        // opening the modal and populating it with the gotten coin details
         modal.innerHTML = `
                     <div class="closeCtn"><i id="closeModalBtn" onclick="closeModal(); resetBtn()" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i></div>
                     <div class="coin_info flex justify-between items-center px-6 mt-4 pt-3 pb-2 border-b-2 border-t-2 border-indigo-500">
@@ -199,6 +201,7 @@ searchForm.addEventListener("submit", async (e) => {
     });
 });
 
+
 let updateUnit = (value, coinAth, fromSearch = false, curPrice) => {
   unitValue = value;
   let athValue = value * coinAth;
@@ -227,12 +230,15 @@ let updateUnit = (value, coinAth, fromSearch = false, curPrice) => {
   document.querySelector('#fiatUnits').value = Math.round(+currentValue)
 };
 
+
+
 let updateUnitFiat = (value, fromSearch = false, currCoinPrice, coinAth) => {
   currentCoinPrice = currCoinPrice
   let coinValue = +value / currentCoinPrice;
   document.querySelector("#coinsUnits").value = coinValue;
   updateUnit(+document.querySelector("#coinsUnits").value, coinAth, fromSearch, currentCoinPrice);
 };
+
 
 
 let updateUI = () => {
@@ -281,12 +287,16 @@ let updateUI = () => {
     } 
 };
 
+
+
 let deleteItem = (nameOfCoin) => {
   let coinIndex = coins.findIndex((coin) => coin.name === nameOfCoin)
   coins.splice(coinIndex, 1)
   generatePortfolio()
   updateLocalStorage()
 }
+
+
 
 let coinObject
 
@@ -351,12 +361,9 @@ let edit = (nameOfCoin) => {
         <div class="btnCtn">
         <button onclick="addCoinEdit(${coinAth}, ${units}, '${imgUrl}', ${coinCurPrice}, '${name}')" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Save</button>
         </div>
-            
             </div>
 
         `;
-  
-
 }
 
 
@@ -375,6 +382,7 @@ let clearAll = () => {
     updateUI()
 }
 
+
 let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice, nameOfCoin) => {
   let athValue = +units * coinAth;
   let currentValue = coinCurPrice * +units;
@@ -382,10 +390,9 @@ let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice, nameOfCoin) => {
     style: "currency",
     currency: "USD",
   });
+
   let selectedCoinIndex = coins.findIndex((coin) => coin.name === coinName)
   coins.splice(selectedCoinIndex, 1)
-
-
 
   const addToWalletErrorMsg = document.querySelector(".addToWalletErrMsg");
   if (+units > 0 && !coins.find((coin) => coin.name === coinName)) {
@@ -402,13 +409,12 @@ let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice, nameOfCoin) => {
       coinQuery: currentCoinQuery,
     })
 
-    // coins.push();
-
     updateLocalStorage()
     generatePortfolio();
     closeModal();
     emptyMessage.remove();
     resetBtn();
+
   } else if (+units > 0 && coins.find((coin) => coin.name === coinName)) {
     displayErrorMessage(addToWalletErrorMsg, "Coin already exists", 3000);
   } else if (+units <= 0 && !coins.find((coin) => coin.name === coinName)) {
@@ -467,5 +473,5 @@ overlayElems.forEach((ele) => {
 });
 
 
-console.log(coins);
+// console.log(coins);
 generatePortfolio();
