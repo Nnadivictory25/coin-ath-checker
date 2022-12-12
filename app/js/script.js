@@ -299,12 +299,16 @@ let deleteItem = (nameOfCoin) => {
 
 
 let coinObject
+let editedUnitValue = 0
 
 
 let updateCurrentUnit = (coinName) => {
   let buttonCtn = document.querySelector('.btnCtn')
   let Inputvalue = document.querySelector('#coinsUnits').value
-  coinObject.units = +Inputvalue
+  editedUnitValue = +Inputvalue
+  if (+Inputvalue > 0) {
+    coinObject.units = +Inputvalue
+  }
 
   let { name, units, value, imgUrl, coinAth, currentValue, athValue, coinCurPrice, coinQuery } = coinObject;
 
@@ -392,12 +396,12 @@ let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice, nameOfCoin) => {
   });
 
   let selectedCoinIndex = coins.findIndex((coin) => coin.name === coinName)
-  coins.splice(selectedCoinIndex, 1)
+  
 
   const addToWalletErrorMsg = document.querySelector(".addToWalletErrMsg");
-  if (+units > 0 && !coins.find((coin) => coin.name === coinName)) {
+  if (+editedUnitValue > 0) {
 
-    coins.splice(selectedCoinIndex, 0, {
+    coins.splice(selectedCoinIndex, 1, {
       name: coinName,
       units: units,
       value: value,
@@ -415,14 +419,8 @@ let addCoinEdit = (coinAth, units, imgUrl, coinCurPrice, nameOfCoin) => {
     emptyMessage.remove();
     resetBtn();
 
-  } else if (+units > 0 && coins.find((coin) => coin.name === coinName)) {
-    displayErrorMessage(addToWalletErrorMsg, "Coin already exists", 3000);
-  } else if (+units <= 0 && !coins.find((coin) => coin.name === coinName)) {
-    displayErrorMessage(
-      addToWalletErrorMsg,
-      "Enter a value greater than 0",
-      3000
-    );
+  } else if (+editedUnitValue <= 0) {
+    displayErrorMessage(addToWalletErrorMsg, "Enter a value greater than 0", 2000)
   }
 }
 
@@ -436,7 +434,7 @@ let addCoin = (coinAth, units = unitValue, img = imgUrl) => {
   });
 
   const addToWalletErrorMsg = document.querySelector(".addToWalletErrMsg");
-  if (unitValue > 0 && !coins.find((coin) => coin.name === coinName)) {
+  if (+unitValue > 0 && !coins.find((coin) => coin.name === coinName)) {
     coins.push({
       name: coinName,
       units: units,
@@ -454,14 +452,10 @@ let addCoin = (coinAth, units = unitValue, img = imgUrl) => {
     emptyMessage.remove();
     resetBtn();
     console.log(coins);
-  } else if (unitValue > 0 && coins.find((coin) => coin.name === coinName)) {
+  } else if (coins.find((coin) => coin.name === coinName)) {
     displayErrorMessage(addToWalletErrorMsg, "Coin already exists", 3000);
-  } else if (unitValue <= 0 && !coins.find((coin) => coin.name === coinName)) {
-    displayErrorMessage(
-      addToWalletErrorMsg,
-      "Enter a value greater than 0",
-      3000
-    );
+  } else if (+unitValue <= 0) {
+    displayErrorMessage(addToWalletErrorMsg, "Enter a value greater than 0", 3000)
   }
 };
 
@@ -473,5 +467,5 @@ overlayElems.forEach((ele) => {
 });
 
 
-// console.log(coins);
+
 generatePortfolio();
