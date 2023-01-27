@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto ATH portfolio</title>
 
-        <!-- meta tags -->
-        <!-- Primary Meta Tags -->
-        <meta name="title" content="Crypto All-Time-High portfolio worth checker">
-        <meta name="description" content="Check what your crypto portfolio will worth when all your assets gets back to it's ATH">
-        <meta name="keywords" content="Coin ath checker, crypto ath checker, crypto all time high checker, crypto all time high calculator, all time high portfolio worth check, crypto all time high search">
-        <link rel="canonical" href=https://www.coin-ath-checker.vercel.app”>
-        
-        <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://coin-ath-checker.vercel.app">
-        <meta property="og:title" content="Crypto All-Time-High portfolio worth checker">
-        <meta property="og:description"  content="Check what your crypto portfolio will worth when all your assets gets back to it's all time high">
-        <meta property="og:image" content="https://coin-ath-checker.vercel.app/images/preview.png">
-        
-        <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://coin-ath-checker.vercel.app">
-        <meta property="twitter:title" content="Crypto All Time High portfolio worth checker">
-        <meta property="twitter:description" content="Check what your crypto portfolio will worth when all your assets gets back to it's all time high">
-        <meta property="twitter:image" content="https://coin-ath-checker.vercel.app/images/preview.png">
-        <meta name="robots" content="index, follow">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="language" content="English">
-        <meta name="author" content="Nnadi Victory">
+    <!-- meta tags -->
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Crypto All Time High portfolio worth checker">
+    <meta name="description" content="Check what your crypto portfolio will worth when all your assets gets back to it's All Time High">
+    <meta name="keywords" content="Coin ath checker, crypto ath checker, crypto all time high checker, crypto all time high calculator, All Time High portfolio worth check, crypto all time high search">
+    <link rel="canonical" href="https://www.coin-ath-checker.vercel.app">
 
-          <!-- custom stylesheet + script -->
-   <link rel="stylesheet" href="/dist/style.css">
-   <script defer src="/dist/script.js"></script>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://coin-ath-checker.vercel.app">
+    <meta property="og:title" content="Crypto All-Time-High portfolio worth checker">
+    <meta property="og:description" content="Check what your crypto portfolio will worth when all your assets gets back to it's all time high">
+    <meta property="og:image" content="https://coin-ath-checker.vercel.app/images/preview.png">
 
-  <!-- favicon img -->
-  <link rel="shortcut icon" href="/images/Ocalculator.jpg" type="image/x-icon">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://coin-ath-checker.vercel.app">
+    <meta property="twitter:title" content="Crypto All Time High portfolio worth checker">
+    <meta property="twitter:description" content="Check what your crypto portfolio will worth when all your assets gets back to it's all time high">
+    <meta property="twitter:image" content="https://coin-ath-checker.vercel.app/images/preview.png">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="author" content="Nnadi Victory">
 
-  <!-- google font CDN -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
+    <!-- custom stylesheet + script -->
+    <link rel="stylesheet" href="/dist/style.css">
+    <script defer src="/dist/script.js"></script>
 
-  <!-- bootstrap icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <!-- favicon img -->
+    <link rel="shortcut icon" href="/images/Ocalculator.jpg" type="image/x-icon">
+
+    <!-- google font CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
 
 </head>
+
 <body class="text-white">
 
     <div class="vh overlay transition ease-in-out delay-150 fixed bg-zinc-900  z-10"></div>
 
     <div class="vh modal transition ease-in-out delay-150 fixed z-40 mx-auto inset-x-0 my-5 pt-4 pb-4">
-        <div class="closeCtn"><i id="closeModalBtn" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i></div>
+        <div class="closeCtn"><i id="closeModalBtn" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i>
+        </div>
     </div>
-    
+
     <div class="topCtn flex flex-col lg:flex-row justify-center gap-2 items-center py-4 text-white text-center">
-        <p class="text-lg" >Bull run balance :</p>
+        <p class="text-lg">Bull run balance :</p>
         <p class="walletBalance text-2xl font-bold">$0</p>
     </div>
 
@@ -65,11 +69,13 @@
             <p class="text-xl font-bold text-center mx-auto mb-1">SEARCH</p>
             <p class="text-lg font-semibold py-3">Enter coin index below to search for it and add to wallet</p>
             <form id="searchForm">
-                <input id="searchInput" class="w-full p-3 rounded-md mb-5 text-black" minlength="1" placeholder="Enter coin Index, eg: 'BTC'" required type="text">
+                <input id="searchInput" class="w-full p-3 rounded-md mb-5 text-black" minlength="1"
+                    placeholder="Enter coin Index, eg: 'BTC'" required type="text">
                 <p class="errorMessage text-red-600 py-2"></p>
                 <div class="btn_Ctn">
                     <button id="searchBtn" class="w-full rounded-md px-1 py-3 font-bold " type="submit">Search</button>
-                    <img id="loaderImg" class="w-16 dn absolute" src="/images/Rolling-0.6s-224px (2).gif" alt="Loading...">
+                    <img id="loaderImg" class="w-16 dn absolute" src="/images/Rolling-0.6s-224px (2).gif"
+                        alt="Loading...">
                 </div>
             </form>
         </div>
@@ -85,5 +91,14 @@
 
         </div>
     </div>
-</body> 
+
+    <footer class="footer fixed bottom-[-1px] w-full inset-x-0">
+        <div class="footer__links flex items-center justify-center gap-x-3 p-2">
+            <p>Developed by Nnadi Victory</p>
+            <a href="https://twitter.com/nnvictory001"><i class="bi bi-twitter text-xl hover:opacity-80 transition"></i></a>
+            <a href="https://github.com/Nnadivictory25"><i class="bi bi-github text-xl hover:opacity-80 transition"></i></a>
+        </div>
+    </footer>
+</body>
+
 </html>

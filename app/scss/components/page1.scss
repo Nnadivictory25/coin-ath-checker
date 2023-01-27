@@ -12,6 +12,12 @@
     overflow-x: hidden;
 }
 
+.coinCtn {
+    &:last-child {
+        margin-bottom: 2.5rem;
+    }
+}
+
 .overlay {
     height: 100vh !important;
     width: 100vw !important;
@@ -76,4 +82,8 @@
             }
         }
     }
+}
+
+footer {
+    @include linearGradient;
 }
