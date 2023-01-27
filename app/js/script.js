@@ -166,7 +166,7 @@ searchForm.addEventListener("submit", async (e) => {
                 </div>
 
                 <div class="info px-8 flex gap-x-3 mt-2">
-                    <i class="bi bi-info-circle"></i>
+                    <i class="bi bi-info-circle animate__animated animate__heartBeat"></i>
                     <p class="text-xs">Input how many ${coinName} you have below , then click 'add to wallet' to calculate the value of your holding when it goes back to all time high</p>
                 </div>
                 
@@ -344,7 +344,7 @@ let edit = (nameOfCoin) => {
          </div>
 
         <div class="info px-8 flex gap-x-3 mt-2">
-            <i class="bi bi-info-circle"></i>
+            <i class="bi bi-info-circle animate__animated animate__heartBeat"></i>
             <p class="text-xs">Input how many ${name} you have below , then click 'add to wallet' to calculate the value of your holding when it goes back to all time high</p>
         </div>
 
