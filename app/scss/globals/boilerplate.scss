@@ -2,7 +2,6 @@ html {
     font-size: 100%;
     box-sizing: border-box;
     background-color: #252237;
-    overflow-y: scroll;
 }
 
 *, *::before, *::after {
@@ -22,4 +21,7 @@ body {
 }
 .vh {
     visibility: hidden;
+}
+.no-scroll {
+    overflow: hidden !important;
 }

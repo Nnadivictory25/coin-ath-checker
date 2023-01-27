@@ -10,6 +10,7 @@ const coinsContainer = document.querySelector(".coinsCtn");
 const errorMsgElement = document.querySelector(".errorMessage");
 const walletBalanceEle = document.querySelector(".walletBalance");
 const emptyMessage = document.querySelector(".emptyMessage");
+const body = document.querySelector('body')
 
 const overlayElems = [overlay, closeModalBtn];
 
@@ -25,6 +26,7 @@ let currentCoinQuery = ''
 
 let closeModal = () => {
   const elems = [overlay, modal];
+  body.classList.remove('no-scroll')
   elems.forEach((elem) => {
     elem.classList.add("fade-out");
     if (elem.classList.contains("fade-in")) {
@@ -35,6 +37,7 @@ let closeModal = () => {
 
 let openModal = () => {
   const elems = [overlay, modal];
+  body.classList.add('no-scroll')
   elems.forEach((elem) => {
     elem.classList.remove("fade-out");
   });
@@ -329,7 +332,7 @@ let edit = (nameOfCoin) => {
       
   
   
-    modal.innerHTML = `
+    modal.innerHTML = /*html*/ `
             <div class="closeCtn"><i id="closeModalBtn" onclick="closeModal(); resetBtn()" class="bi bi-x absolute right-2 top-0 text-4xl cursor-pointer"></i></div>
             <div class="coin_info flex justify-between items-center px-6 mt-4 pt-3 pb-2 border-b-2 border-t-2 border-indigo-500">
             <img class="w-16 rounded-full mr-4 lg:mr-6" src=${imgUrl} alt=${name}>
